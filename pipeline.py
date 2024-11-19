@@ -3,7 +3,6 @@ import requests
 import base64
 from PIL import Image
 import numpy as np
-from IPython.display import display
 
 api_key = os.getenv("OPENAI_API_KEY")
 
