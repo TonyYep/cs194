@@ -19,7 +19,7 @@ import numpy as np
 image_info_test2017 = json.load(open("annotations/image_info_test2017.json"))
 
 # Learning Batch
-learning_batch = np.random.choice(image_info_test2017["images"], size=20, replace=False)
+learning_batch = np.random.choice(image_info_test2017["images"], size=5, replace=False)
 
 gpt_config = {
     "config_list": [{"model": "gpt-4o", "api_key": os.environ["OPENAI_API_KEY"]}],
@@ -42,7 +42,7 @@ As an critic agent, you will first be given a batch of images to learn and analy
 After that, say BEGIN_EDIT to ask for the image you will work on.
 Then, you will be shown with the image needed to improve through directing the Dalle model to do image inpainting. To improve the image, you need to analyze how you think the image should be improved in terms of enhancing the overall quality and values of the image batch. You must give clear direction of inpainting. 
 You answer must include the best location to draw the mask box (left, top, right, bottom) in pixels, where the image will be inpainted, and the prompt for dalle model to generate. Note the prompt should describe the full new image, not just the inpainted area.
-The mask box should be narrow enough and focused on the detail area. It should not be too broad. 
+The mask box should be narrow enough and focused on the detail area. It should not be too broad. Also, make sure you don't change anything entirely. Everything should remain the same object classes but could be different in style. 
 For example, your response should be like:
 
 The image is showing..., but need to improve.... Hence, the mask box will have left-top corner at (left: 103, top: 245) and right-bottom corner at (right: 392, bottom: 532). The prompt is: ...
@@ -68,7 +68,7 @@ def critic_agent() -> autogen.ConversableAgent:
         name="critic",
         llm_config=gpt_vision_config,
         system_message=CRITIC_SYSTEM_MESSAGE,
-        max_consecutive_auto_reply=3,
+        # max_consecutive_auto_reply=3,
         human_input_mode="NEVER",
         is_termination_msg=lambda msg: _is_termination_message(msg),
     )
@@ -79,7 +79,7 @@ def image_editing_agent(working_image_url: str) -> autogen.ConversableAgent:
     agent = autogen.ConversableAgent(
         name="dalle",
         llm_config=gpt_vision_config,
-        max_consecutive_auto_reply=3,
+        # max_consecutive_auto_reply=3,
         human_input_mode="NEVER",
         is_termination_msg=lambda msg: _is_termination_message(msg),
     )
