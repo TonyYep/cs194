@@ -97,6 +97,26 @@ def image_editing_agent(working_image_url: str) -> autogen.ConversableAgent:
 
 learning_batch_url = [image["coco_url"] for image in learning_batch]
 
+def extract_image(sender: autogen.ConversableAgent, recipient: autogen.ConversableAgent) -> Image:
+    image = None
+    all_messages = sender.chat_messages[recipient]
+
+    for message in reversed(all_messages):
+        # The GPT-4V format, where the content is an array of data
+        contents = message.get("content", [])
+        for content in contents:
+            if isinstance(content, str):
+                continue
+            if content.get("type", "") == "image_url":
+                img_data = content["image_url"]["url"]
+                image = img_utils.get_pil_image(img_data)
+                break
+        else:
+            continue
+        break
+
+    return image
+
 # Iterate over images
 for url in learning_batch_url:
 
@@ -118,3 +138,4 @@ for url in learning_batch_url:
     result = dalle.initiate_chat(critic, message=initial_msg)
     
     input(f"Now finished {url}")
+    extract_image(dalle, critic).show()
