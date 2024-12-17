@@ -1,6 +1,4 @@
 # CS194 Project Code - Synthetic Image Dataset Generation via AutoGen
-We provide two strategies via AutoGen - [MixUp](./Mixup) and [Inpainting](./AutoGenInpainting). 
+We provide two pipeline strategies via AutoGen - [MixUp](https://github.com/TonyYep/cs194/tree/main/MixUp) and [Inpainting](https://github.com/TonyYep/cs194/tree/main/AutoGenInpainting). 
 
-
-## Evaluation Part:
-We train Resnet 18 for image classification and Image detection tasks on both unaugmented dataset and LLM=based augment dataset to see if our generated dataset is valid. 
+For evaluation part, go to [Evaluation](https://github.com/TonyYep/cs194/tree/main/Evaluation).
