@@ -56,7 +56,7 @@ Ensure you have an OpenAI API key. Export it as an environment variable:
 export OPENAI_API_KEY='your_openai_api_key'
 ```
 
-Alternatively, include the key in your scripts where required.
+Alternatively, include the key in the scripts.
 
 ---
 
